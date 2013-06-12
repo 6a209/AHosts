@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HostEditor</string>
+    <string name="add">新建</string>
+	<string name="toggle">更新选中项</string>
+	<string name="del">删除选中</string>
+	<string name="debug">调试模式</string>
+	<string name="ip">ip</string>
+	<string name="host">网址</string>
+	<string name="save">保存</string>
+	<string name="alias">别名</string>
+	
+	
+	<string name="hint_input_host">请输入网址</string>
+	<string name="hint_input_ip">请输入ip</string>
+	<string name="hint_input_alias">请输入别名</string>
+	<string name="chose_debug_ip">选择debug ip</string>
+	<string name="chose_debug_host">选择debug网址</string>
+	<string name="start_debug">启动debug模式</string>
+	<string name="close_debug">关闭debug模式</string>
+	
+	<string name="write_file_err">文件写入出错</string>
+	
+</resources>
