@@ -1,5 +1,6 @@
-package org.hosteditor;
+package com.hosteditor;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -15,8 +16,8 @@ public class HostAdapter extends BaseAdapter{
 	// ip patter
 	private String ipPatter = "\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5]";
 	private Context mCtx;
-	private ArrayList<String> mHostList;
-	public HostAdapter(Context ctx, ArrayList<String> list){
+	private List<String> mHostList;
+	public HostAdapter(Context ctx, List<String> list){
 		mCtx = ctx;
 		mHostList = list;
 	}
