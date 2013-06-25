@@ -1,4 +1,4 @@
-package com.hosteditor;
+package org.hosteditor;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

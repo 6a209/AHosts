@@ -16,11 +16,10 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_input_ip" />
 
-    <Button
-        android:id="@+id/save_btn"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/alias_ip"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/save" />
+        android:hint="@string/hint_input_ip" />
 
 </LinearLayout>

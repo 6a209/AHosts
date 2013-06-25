@@ -1,4 +1,4 @@
-package com.hosteditor;
+package org.hosteditor;
 
 import org.hosteditor.R;
 
@@ -11,34 +11,41 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-
+/**
+ * add item
+ * @author 6a209
+ * Jun 25, 2013
+ */
 public class AddItemFragment extends Fragment{
 	
 	private EditText mIpEt;
 	private EditText mHostEt;
-	private Button mSaveBtn;
+	private EditText mAliasIpEt;
 	
 	@Override
 	public void onCreate(Bundle bundle){
-		
+		super.onCreate(bundle);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle){
-		View view = inflater.inflate(R.layout.add_host, container);
+		View view = inflater.inflate(R.layout.add_host, container, false);
 		mIpEt = (EditText)view.findViewById(R.id.ip);
 		mHostEt = (EditText)view.findViewById(R.id.host);
-		mSaveBtn = (Button)view.findViewById(R.id.save_btn);
-		mSaveBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				HostEditorAct act = (HostEditorAct)getActivity();
-				String ip = mIpEt.getText().toString();
-				String host = mHostEt.getText().toString();
-				act.createItem(ip + " " + host);
-			}
-		});
+		mAliasIpEt = (EditText)view.findViewById(R.id.alias_ip);
 		return view;
+	}
+	
+	public String getIp(){
+		return mIpEt.getText().toString();
+	}
+	
+	public String getHost(){
+		return mHostEt.getText().toString();
+	}
+	
+	public String getAliasIp(){
+		return mAliasIpEt.getText().toString();
 	}
 	
 	

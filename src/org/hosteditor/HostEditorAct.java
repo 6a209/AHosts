@@ -1,9 +1,8 @@
-package com.hosteditor;
-
-import org.hosteditor.R;
+package org.hosteditor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,9 +12,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import org.hosteditor.R;
 
 public class HostEditorAct extends SherlockFragmentActivity{
-	
 	
 	private ListView mListView;
 	private Button mToggleBtn;
@@ -25,8 +24,10 @@ public class HostEditorAct extends SherlockFragmentActivity{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(R.string.add).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(R.string.debug).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(R.string.add)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(R.string.debug)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add(R.string.del).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}
@@ -36,9 +37,9 @@ public class HostEditorAct extends SherlockFragmentActivity{
         //This uses the imported MenuItem from ActionBarSherlock
     	String title = item.getTitle().toString();
     	if(title.equals(getString(R.string.add))){
-    		
+    		showAddItem();
     	}else if (title.equals(getString(R.string.debug))){
-    		
+
     	}else if(title.equals(getString(R.string.del))){
     		long [] ids = mListView.getCheckItemIds();
     		delItem(ids);
@@ -51,7 +52,8 @@ public class HostEditorAct extends SherlockFragmentActivity{
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mAddItemFragment = (AddItemFragment)getSupportFragmentManager().findFragmentById(R.id.add_item);
+//        mAddItemFragment = (AddItemFragment)getSupportFragmentManager().findFragmentById(R.id.add_item);
+        mAddItemFragment = new AddItemFragment();
         mApi = new HostApi();
         if(!mApi.checkRoot()){
         	
@@ -68,7 +70,10 @@ public class HostEditorAct extends SherlockFragmentActivity{
 				toggleItme(ids);
 			}
 		});
+        initItems();
+//    	hideAddItem();
     }
+    
     
     private void initItems(){
     	mApi.init();
@@ -76,11 +81,21 @@ public class HostEditorAct extends SherlockFragmentActivity{
     	mListView.setAdapter(mAdapter);
     }
     
+    private void showAddItem(){
+    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    	ft.add(android.R.id.content, mAddItemFragment).commit();
+    }
+    
+    private void hideAddItem(){
+    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    	ft.hide(mAddItemFragment);
+    }
+    
+    
     private void delItem(long[] ids){
     	mApi.del(convert2intArray(ids));
     	mAdapter.notifyDataSetChanged();
     }
-    
     
     public void createItem(String newItem){
     	try{

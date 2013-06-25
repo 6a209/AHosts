@@ -1,4 +1,4 @@
-package com.hosteditor;
+package org.hosteditor;
 import java.util.ArrayList;
 import java.util.List;
 
