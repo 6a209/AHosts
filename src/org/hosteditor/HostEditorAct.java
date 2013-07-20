@@ -1,8 +1,8 @@
 package org.hosteditor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import org.hosteditor.R;
 
 public class HostEditorAct extends SherlockFragmentActivity{
 	
@@ -20,7 +19,10 @@ public class HostEditorAct extends SherlockFragmentActivity{
 	private Button mToggleBtn;
 	private HostAdapter mAdapter;
 	private HostApi mApi;
-	private Fragment mAddItemFragment;
+	
+	private Button mDelAllBtn;
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,7 +30,7 @@ public class HostEditorAct extends SherlockFragmentActivity{
 			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add(R.string.debug)
 			.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(R.string.del).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(R.string.select_all).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}
 
@@ -37,12 +39,15 @@ public class HostEditorAct extends SherlockFragmentActivity{
         //This uses the imported MenuItem from ActionBarSherlock
     	String title = item.getTitle().toString();
     	if(title.equals(getString(R.string.add))){
-    		showAddItem();
+    		toAddAct();
     	}else if (title.equals(getString(R.string.debug))){
 
-    	}else if(title.equals(getString(R.string.del))){
-    		long [] ids = mListView.getCheckItemIds();
-    		delItem(ids);
+    	}else if(title.equals(getString(R.string.select_all))){
+    		item.setTitle(R.string.cancle_select_all);
+    		selectAll();
+    	}else if(title.equals(getString(R.string.cancle_select_all))){
+    		item.setTitle(R.string.select_all);
+    		cancelSelectAll();
     	}
         return true;
     }
@@ -52,8 +57,6 @@ public class HostEditorAct extends SherlockFragmentActivity{
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        mAddItemFragment = (AddItemFragment)getSupportFragmentManager().findFragmentById(R.id.add_item);
-        mAddItemFragment = new AddItemFragment();
         mApi = new HostApi();
         if(!mApi.checkRoot()){
         	
@@ -62,16 +65,34 @@ public class HostEditorAct extends SherlockFragmentActivity{
         mListView.setItemsCanFocus(false);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         mToggleBtn = (Button)findViewById(R.id.toggle_btn);
+        mDelAllBtn = (Button)findViewById(R.id.del_btn);
         mToggleBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				long [] ids = mListView.getCheckItemIds();
+				long [] ids = mListView.getCheckedItemIds();
 				toggleItme(ids);
 			}
 		});
+        
+        mDelAllBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				long [] ids = mListView.getCheckedItemIds();
+				delItem(ids);
+			}
+		});
         initItems();
-//    	hideAddItem();
+    }
+    
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data){
+    	if(RESULT_OK == resultCode){
+    		if(Const.REQ_ADD_CODE == reqCode){
+    			initItems();
+    		}
+    	}
     }
     
     
@@ -80,17 +101,11 @@ public class HostEditorAct extends SherlockFragmentActivity{
     	mAdapter = new HostAdapter(this, mApi.getItemList());
     	mListView.setAdapter(mAdapter);
     }
-    
-    private void showAddItem(){
-    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    	ft.add(android.R.id.content, mAddItemFragment).commit();
+
+    private void toAddAct(){
+    	Intent intent = new Intent(this, AddItemAct.class);
+    	startActivityForResult(intent, Const.REQ_ADD_CODE);
     }
-    
-    private void hideAddItem(){
-    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    	ft.hide(mAddItemFragment);
-    }
-    
     
     private void delItem(long[] ids){
     	mApi.del(convert2intArray(ids));
@@ -109,6 +124,19 @@ public class HostEditorAct extends SherlockFragmentActivity{
     private void toggleItme(long [] ids){
     	mApi.toogle(convert2intArray(ids));
     }
+    
+    private void selectAll(){
+    	for(int i = 0; i < mAdapter.getCount(); i++){
+    		mListView.setItemChecked(i, true);
+    	}
+    }
+    
+    private void cancelSelectAll(){
+    	for(int i = 0; i < mAdapter.getCount(); i++){
+    		mListView.setItemChecked(i, false);
+    	}
+    }
+    
     
     private int[] convert2intArray(long [] ids){
     	int [] pos = new int [ids.length];

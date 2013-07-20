@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -17,7 +18,7 @@
         android:hint="@string/hint_input_ip" />
 
     <EditText
-        android:id="@+id/alias_ip"
+        android:id="@+id/alias_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_input_ip" />

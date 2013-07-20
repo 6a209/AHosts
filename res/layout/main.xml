@@ -3,34 +3,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
+
     <View
         android:id="@+id/ad_layout"
-        android:layout_alignParentBottom="true" 
         android:layout_width="fill_parent"
-        android:layout_height="50dp">
-        
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" >
     </View>
-    
-    <Button 
+
+    <LinearLayout
+        android:id="@+id/btn_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/ad_layout"
-        android:id="@+id/toggle_btn"
-        android:text="@string/toggle"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <Button 
+            android:layout_weight="1"
+            android:text="@string/del"
+            android:id="@+id/del_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"/>
+		        
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/toggle_btn"
+            android:layout_height="wrap_content"
+            android:text="@string/toggle" />
+        
+        
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    
-	
-	<ListView
-	    android:layout_above="@id/toggle_btn"
-	    android:id="@+id/listview"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"/>
-	
-	
-<!-- 	<fragment class="org.hosteditor.AddItemFragment" -->
-<!-- 	    android:visibility="gone" -->
-<!-- 	    android:layout_width="match_parent" -->
-<!-- 	    android:layout_height="match_parent" -->
-<!-- 	    android:id="@+id/add_item"/> -->
-	
+        android:layout_height="fill_parent"
+        android:layout_above="@id/btn_ly" />
+
 </RelativeLayout>

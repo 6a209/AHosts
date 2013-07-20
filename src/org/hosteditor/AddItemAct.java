@@ -1,5 +1,6 @@
 package org.hosteditor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
@@ -32,7 +33,14 @@ public class AddItemAct extends SherlockFragmentActivity{
 			.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
-					
+					String ip = mAddItemFragment.getIp();
+					String host = mAddItemFragment.getHost();
+					String aliasName = mAddItemFragment.getAliasIp();
+					Intent intent = new Intent();
+					intent.putExtra(Const.IP_KEY, ip);
+					intent.putExtra(Const.HOST_KEY, host);
+					intent.putExtra(Const.ALIAS_KEY, aliasName);
+					setResult(RESULT_OK, intent);
 					return false;
 				}
 			})

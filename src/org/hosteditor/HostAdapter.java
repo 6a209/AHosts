@@ -1,10 +1,8 @@
 package org.hosteditor;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,7 @@ import android.widget.CheckedTextView;
 public class HostAdapter extends BaseAdapter{
 
 	// ip patter
-	private String ipPatter = "\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5]";
+	private String mIpPatter = "\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5]";
 	private Context mCtx;
 	private List<String> mHostList;
 	public HostAdapter(Context ctx, List<String> list){

@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 
 public class HostApi {
 	
@@ -61,7 +63,9 @@ public class HostApi {
 	}
 	
 	public void del(int [] idx){
-		mItemList.remove(idx);
+		for(int i = 0; i < mItemList.size(); i++){
+			mItemList.remove(i);
+		}
 		writeHost();
 	}
 	
@@ -90,13 +94,17 @@ public class HostApi {
 	private void writeHost(){
 		DataOutputStream localDataOutputStream = new DataOutputStream(mProcess.getOutputStream());
         try {
-			localDataOutputStream.writeBytes("mount -o rw,remount -t " + mFileType + mFileSystemName + " /system\n");
+        	String mountCmd = "mount -o rw,remount -t " + mFileType + mFileSystemName + " /system\n";
+        	Log.d("the mount cmd is => ", mountCmd);
+			localDataOutputStream.writeBytes(mountCmd);
 	        localDataOutputStream.writeBytes("echo '' > /system/etc/hosts\n");
-			for(String item : mItemList){
-		        localDataOutputStream.writeBytes("echo " + item + ">> /system/etc/hosts\n");
-			}
 	        localDataOutputStream.writeBytes("exit\n");
 	        localDataOutputStream.flush();
+//			for(String item : mItemList){
+//		        localDataOutputStream.wrijteBytes("echo " + item + ">> /system/etc/hosts\n");
+//			}
+//	        localDataOutputStream.writeBytes("exit\n");
+//	        localDataOutputStream.flush();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -108,20 +116,25 @@ public class HostApi {
 	 * get the mount argment
 	 */
 	private void initArgv(){
-		String str = "";
+		String line = "";
 		try {
-			str = new BufferedReader(new InputStreamReader(Runtime
-					.getRuntime().exec("cat /proc/mounts | grep /system")
-					.getInputStream())).readLine();
+			BufferedReader buffered = new BufferedReader(new InputStreamReader(Runtime
+					.getRuntime().exec("cat /proc/mounts")
+					.getInputStream()));
+			while(null != (line = buffered.readLine())){
+				if(line.contains("system")){
+					break;
+				}
+			}
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (str != null) {
-			String[] arrayOfString2 = str.split(" ");
-			if (arrayOfString2.length >= 3) {
-				mFileSystemName = arrayOfString2[0];
-				mFileType = arrayOfString2[2];
+		if (line != null) {
+			String[] argvs = line.split(" ");
+			if (argvs.length >= 3) {
+				mFileSystemName = argvs[0];
+				mFileType = argvs[2];
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class AddItemFragment extends Fragment{
 		View view = inflater.inflate(R.layout.add_host, container, false);
 		mIpEt = (EditText)view.findViewById(R.id.ip);
 		mHostEt = (EditText)view.findViewById(R.id.host);
-		mAliasIpEt = (EditText)view.findViewById(R.id.alias_ip);
+		mAliasIpEt = (EditText)view.findViewById(R.id.alias_name);
 		return view;
 	}
 	
@@ -47,6 +47,5 @@ public class AddItemFragment extends Fragment{
 	public String getAliasIp(){
 		return mAliasIpEt.getText().toString();
 	}
-	
 	
 }

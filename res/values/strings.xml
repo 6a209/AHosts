@@ -3,6 +3,8 @@
 
     <string name="app_name">HostEditor</string>
     <string name="add">新建</string>
+    <string name="select_all">全选</string>
+    <string name="cancle_select_all">取消全选</string>
 	<string name="toggle">更新选中项</string>
 	<string name="del">删除选中</string>
 	<string name="debug">调试模式</string>
